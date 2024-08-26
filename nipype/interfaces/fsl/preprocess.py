@@ -932,15 +932,25 @@ class MCFLIRT(FSLCommand):
         # Note that the same problem holds for the std and variance image.
 
         if isdefined(self.inputs.mean_vol) and self.inputs.mean_vol:
-            if LooseVersion(Info.version()) < LooseVersion("6.0.0"):
-                # FSL <6.0 outputs have .nii.gz_mean_img.nii.gz as extension
+            # if LooseVersion(Info.version()) < LooseVersion("6.0.0"):
+            #     # FSL <6.0 outputs have .nii.gz_mean_img.nii.gz as extension
+            #     outputs["mean_img"] = self._gen_fname(
+            #         outputs["out_file"] + "_mean_reg.ext", cwd=output_dir
+            #     )
+            # else:
+            #     outputs["mean_img"] = self._gen_fname(
+            #         outputs["out_file"], suffix="_mean_reg", cwd=output_dir
+            #     )
+            if op.exists(self._gen_fname(
+                    outputs["out_file"] + "_mean_reg.ext", cwd=output_dir
+                )):
                 outputs["mean_img"] = self._gen_fname(
                     outputs["out_file"] + "_mean_reg.ext", cwd=output_dir
                 )
             else:
                 outputs["mean_img"] = self._gen_fname(
                     outputs["out_file"], suffix="_mean_reg", cwd=output_dir
-                )
+                )  
 
         if isdefined(self.inputs.save_mats) and self.inputs.save_mats:
             _, filename = os.path.split(outputs["out_file"])
